@@ -803,7 +803,7 @@
 		"source": "K10plus ISBN",
 		"title": "Fiscal policy from pandemic to war",
 		"URL": "https://www.imf.org/en/Publications/FM/Issues/2022/04/12/fiscal-monitor-april-2022",
-		"editor": [
+		"author": [
 			{
 				"family": "Internationaler Währungsfonds",
 				"given": ""
@@ -831,7 +831,7 @@
 		"source": "K10plus ISBN",
 		"title": "How to achieve inclusive growth",
 		"URL": "https://www.imf.org/en/Publications/fandd/issues/2022/03",
-		"editor": [
+		"author": [
 			{
 				"family": "Cerra",
 				"given": "Valerie"
