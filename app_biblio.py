@@ -18,7 +18,7 @@ import dash_bootstrap_components as dbc
 #     data = json.load(json_file)
 # biblio = pd.json_normalize(data,"author",  ['id', 'type', 'language', 'page', 'title', 'issued'], errors = 'ignore')
 
-url = 'https://raw.githubusercontent.com/louisroquiny/treemap-ccecrb-debat/main/bibliography.json'
+url = 'https://raw.githubusercontent.com/louisroquiny/ccecrb-debat-bibliography/main/bibliography.json'
 biblio = pd.read_json(url)
 # biblio.fillna("", inplace=True)
 biblio['author'] = biblio['author'].apply(lambda x: ', '.join([item.get('literal', '') + item.get('family', '') +' ' + item.get('given', '') for item in x]))
