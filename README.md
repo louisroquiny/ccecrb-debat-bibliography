@@ -7,6 +7,8 @@ This dashboard is used on ccecrb-debat.com to show a list of useful papers and r
 
 To add one or more resources to the dashboard, please send an application to join the Zotero group. Once added to the group, you can add new resources to the library which will automatically appear in the dashboard.
 
+To ensure that your resources are displayed correctly on the dashboard, please make sure to fill in the following fields: title, author, date, and URL. This will ensure that the resources are properly organized and easily searchable by users. Feel free to modify any other relevant fields to provide additional information or context for the resources.
+
 ## Usage
 
 The dashboard displays a table of resources which can be filtered and sorted using the options at the top of each column. To filter the table, simply click on the filter icon and enter a search term. To sort the table, click on the column header.
