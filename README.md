@@ -1,7 +1,7 @@
 # ccecrb-debat-bibliography
 bib-app on ccecrb-debat.com
 
-This dashboard is used on ccecrb-debat.com to show a list of useful papers and resources for the public finances debate. The dashboard is powered by the Python Dash framework and retrieves data from a Zotero library using the pyzotero library.
+This dashboard is used on ccecrb-debat.com to show a list of useful papers and resources for the public finances debate. The dashboard is powered by the Python Dash framework and retrieves data from a Zotero library using the `pyzotero` library.
 
 ## Adding Resources
 
