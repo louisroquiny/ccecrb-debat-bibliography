@@ -26,18 +26,6 @@ The dashboard displays a table of resources which can be filtered and sorted usi
 4. Run the app using python app.py.
 5. Navigate to http://127.0.0.1:8050/ in your web browser to see the dashboard.
 
-## Dependencies
-
-The dashboard requires the following Python packages to be installed:
-
-dash
-dash_bootstrap_components
-pandas
-pyzotero
-These packages can be installed using pip:
-
-`pip install dash dash_bootstrap_components pandas pyzotero`
-
 ## Credits
 
 This dashboard was created using the Dash framework and the pyzotero library. The design is based on the LITERA theme from Bootstrap.
