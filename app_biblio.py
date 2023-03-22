@@ -12,6 +12,7 @@ from dash import Dash, html, dcc, Input, Output, dash_table
 import pandas as pd
 import dash_bootstrap_components as dbc
 from pyzotero import zotero
+<<<<<<< Updated upstream
 from assets.credentials import library_id, library_type, api_key
 
 zot = zotero.Zotero(library_id, library_type, api_key)
@@ -54,12 +55,69 @@ for item in items:
 # create a Pandas DataFrame from the list of dictionaries
 biblio = pd.DataFrame(item_list)
 
+=======
+
+library_id = 4996437
+library_type = 'group'
+api_key = "gDtdYfV19gseo7nLKhDdKFJV"
+
+zot = zotero.Zotero(library_id, library_type, api_key)
+
+# retrieve the items from your library and specify the fields to include
+items = zot.everything(zot.top())
+
+# create a list of dictionaries representing the items
+item_list = []
+for item in items:
+    # get the first author's name if available
+    try : 
+        if 'name' in  item['data']['creators'][0] :
+            author = item['data']['creators'][0]['name']
+        if 'firstName' in item['data']['creators'][0]:
+            author = item['data']['creators'][0]['firstName'] + ' ' + item['data']['creators'][0]['lastName']
+        else:
+            author = item['data']['creators'][0]['lastName']
+        # create a dictionary for the item
+        item_dict = {'Title' : item['data']['title'],
+                     'Author': author,
+                     'Type': item['data']['itemType'],
+                     'Date': item['data']['date'],
+                     'Link': item['data']['url']}
+        item_list.append(item_dict)
+   
+    except KeyError :
+        if 'name' in  item['data']['creators'][0] :
+            author = item['data']['creators'][0]['name']
+        if 'firstName' in item['data']['creators'][0]:
+            author = item['data']['creators'][0]['firstName']
+        # create a dictionary for the item
+        item_dict = {'Title' : item['data']['title'],
+                     'Author': author,
+                     'Type': item['data']['itemType'],
+                     'Date': item['data']['date'],
+                     'Link': item['data']['url']}
+        item_list.append(item_dict)
+        
+# create a Pandas DataFrame from the list of dictionaries
+biblio = pd.DataFrame(item_list)
+
+>>>>>>> Stashed changes
 biblio["Date"] = pd.to_datetime(biblio["Date"], infer_datetime_format= True)
 biblio["Date"] = biblio["Date"].dt.date
 
 biblio.fillna("", inplace=True)
 
 biblio.Link = biblio.Link.astype(str).apply(lambda x : '[Link]('+ x + ')' if len(x) > 0 else "" )
+<<<<<<< Updated upstream
+=======
+
+#On récupère les colonnes à supprimer
+columns_to_drop = list(biblio.columns[24:25]) + list(biblio.columns[28:])
+
+#On supprime les colonnes
+biblio.drop(columns_to_drop, axis = 1, inplace = True)
+
+>>>>>>> Stashed changes
 
 # biblio = biblio.astype(str)
 biblio_to_display = biblio.sort_values('Date', ascending = False)
