@@ -18,44 +18,19 @@ zot = zotero.Zotero(library_id, library_type, api_key)
 
 # retrieve the items from your library and specify the fields to include
 items = zot.everything(zot.top())
-
-# create a list of dictionaries representing the items
-item_list = []
-for item in items:
-    # get the first author's name if available
-    try : 
-        if 'name' in  item['data']['creators'][0] :
-            author = item['data']['creators'][0]['name']
-        if 'firstName' in item['data']['creators'][0]:
-            author = item['data']['creators'][0]['firstName'] + ' ' + item['data']['creators'][0]['lastName']
-        else:
-            author = item['data']['creators'][0]['lastName']
-        # create a dictionary for the item
-        item_dict = {'Title' : item['data']['title'],
-                     'Author': author,
-                     'Type': item['data']['itemType'],
-                     'Date': item['data']['date'],
-                     'Link': item['data']['url']}
-        item_list.append(item_dict)
-   
-    except KeyError :
-        if 'name' in  item['data']['creators'][0] :
-            author = item['data']['creators'][0]['name']
-        if 'firstName' in item['data']['creators'][0]:
-            author = item['data']['creators'][0]['firstName']
-        # create a dictionary for the item
-        item_dict = {'Title' : item['data']['title'],
-                     'Author': author,
-                     'Type': item['data']['itemType'],
-                     'Date': item['data']['date'],
-                     'Link': item['data']['url']}
-        item_list.append(item_dict)
         
+# create a list of dictionaries representing the items
+item_list = [{'Title': item['data']['title'],
+              'Author': item['data']['creators'][0].get('name', '') or \
+                        item['data']['creators'][0].get('firstName', '') + ' ' + \
+                        item['data']['creators'][0].get('lastName', ''),
+              'Date': item['data'].get('date', ''),
+              'Link': item['data'].get('url', '')} for item in items]
+    
 # create a Pandas DataFrame from the list of dictionaries
 biblio = pd.DataFrame(item_list)
 
-biblio["Date"] = pd.to_datetime(biblio["Date"], infer_datetime_format= True)
-biblio["Date"] = biblio["Date"].dt.date
+biblio["Date"] = pd.to_datetime(biblio["Date"], infer_datetime_format= True).dt.date
 
 biblio.fillna("", inplace=True)
 
