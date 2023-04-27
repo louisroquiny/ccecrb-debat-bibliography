@@ -27,43 +27,53 @@ item_list = [{'Title': item['data']['title'],
               'Date': item['data'].get('date', ''),
               'Link': item['data'].get('url', '')} for item in items]
     
+for item in items: 
+    print(item['data']['tags']).get('tag')
+    
 # create a Pandas DataFrame from the list of dictionaries
-biblio = pd.DataFrame(item_list)
+biblio = pd.DataFrame(item_list)    
 
-biblio["Date"] = pd.to_datetime(biblio["Date"], infer_datetime_format= True).dt.date
+# Convert the Date column to datetime and fill missing values
+biblio["Date"] = pd.to_datetime(biblio["Date"], infer_datetime_format= True, dayfirst=True).dt.date
 
-biblio.fillna("", inplace=True)
+# Sort the DataFrame by date
+biblio_to_display = biblio.sort_values('Date', ascending = False, na_position = 'first')
+biblio_to_display.fillna("", inplace=True)
 
-biblio.Link = biblio.Link.astype(str).apply(lambda x : '[Link]('+ x + ')' if len(x) > 0 else "" )
-
-# biblio = biblio.astype(str)
-biblio_to_display = biblio.sort_values('Date', ascending = False)
+# Create a link column with markdown formatting
+biblio_to_display.Link = biblio_to_display.Link.astype(str).apply(lambda x : '[Download]('+ x + ')' if len(x) > 0 else "" )
 
 app_biblio = Dash(__name__, external_stylesheets=[dbc.themes.LITERA])
 app = app_biblio.server
 app_biblio.config.suppress_callback_exceptions = False
 
-# Ajoutez un champ de recherche et un tableau à la page HTML
 app_biblio.layout = dash_table.DataTable(
-    biblio_to_display.to_dict("records"),
-    #[{"name": i, "id": i} for i in biblio_to_display.columns],
-    [{'id': x, 'name': x, 'presentation': 'markdown'} if x == 'Link' else {'id': x, 'name': x} for x in biblio_to_display.columns],
-    filter_action="native",
+    data=biblio_to_display.to_dict('records'),
+    columns=[{'id': x, 'name': x, 'presentation': 'markdown'} if x == 'Link' else {'id': x, 'name': x} for x in biblio_to_display.columns],
+    filter_action='native',
     sort_action='native',
-    sort_mode="multi",
-    filter_options={"placeholder_text": "Filter column..."},
-    # fixed_rows={'headers': True},
+    sort_mode='multi',
+    filter_options={'placeholder_text': 'Filter column...'},
     page_size=15,
     style_table={
         'overflowX': 'auto',
-        'height': '100%',
-        # 'witdh' : 500
-        },
-    style_data={
-    'whiteSpace': 'normal',
-    'height': 'auto',
+        'padding': '10px', # Add padding to table cells
+        # 'border': '1px solid black', # Add a border to the table
+        'backgroundColor': 'white', # Set background color to white
+        'textAlign': 'center' # Center table content
     },
-    style_cell = {'font_size': '14px'},
+    style_data={
+        'whiteSpace': 'normal',
+        'height': 'auto',
+        'border': '1px solid black', # Add border to table rows
+    },
+    style_cell={
+        'font-family': 'Calibri',
+        'font_size': '15px',
+        'textAlign': 'center', # Center cell text
+        'padding': '5px', # Add cell padding
+        'backgroundColor': '#FFFFFF', # Set cell background color
+    },
     style_cell_conditional=[
         {
             'if': {'column_id': 'Title'},
@@ -72,8 +82,20 @@ app_biblio.layout = dash_table.DataTable(
         {
             'if': {'column_id': 'Author'},
             'textAlign': 'left'
-        }]
+        }
+    ],
+    style_header={
+        'backgroundColor': '#c7c7c7', # Set header background color
+        'color': 'white', # Set header font color to white
+        'fontWeight': 'bold', # Set header font weight to bold
+        'border': '1px solid black', # Add border to header cells
+        'padding': '5px', # Add header cell padding
+    },
+    page_action='native', # Enable pagination
+    page_current=0, # Set current page to 0
+
 )
+
 
 # Exécutez l'application
 if __name__ == '__main__':
